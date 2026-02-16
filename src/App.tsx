@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { ProctorWrapper } from "./components/ProctorWrapper";
 
 function App() {
+  // Clear logs on every app load (DEV ONLY behavior)
+  useEffect(() => {
+    localStorage.removeItem("proctor_logs");
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <ProctorWrapper questionId="Q1">
+      <div style={{ padding: 40 }}>
+        <h1>Assessment Question</h1>
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Explain how React hooks work and why dependency arrays are important.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+        <textarea
+          rows={8}
+          style={{ width: "100%", marginTop: 20 }}
+          placeholder="Write your answer here..."
+        />
+      </div>
+    </ProctorWrapper>
   );
 }
 
