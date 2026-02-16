@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ProctorWrapper } from "./components/ProctorWrapper";
 
 function App() {
-  // Clear logs on every app load (DEV ONLY behavior)
+  // Clear logs on every app load 
   useEffect(() => {
     localStorage.removeItem("proctor_logs");
   }, []);

@@ -1,46 +1,96 @@
-# Getting Started with Create React App
+# Secure Assessment - React Proctoring App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a **React-based secure assessment app** designed to simulate a locked-down, time-bound, and auditable test environment. It includes proctoring features such as fullscreen enforcement, tab/focus monitoring, copy-paste detection, and timer-based logging.
 
-## Available Scripts
+The project is hosted at: [https://myth293.github.io/secure-assessment](https://myth293.github.io/secure-assessment)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. **Secure Test Environment**
+   - Fullscreen enforcement: the test requires fullscreen mode, and leaving fullscreen pauses the test and counts as a violation.
+   - Tab / window focus monitoring: switching tabs or minimizing the browser is detected as a violation.
+   - Copy, paste, and cut attempts are detected and logged.
+   - Violation counter displayed live.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+2. **Timer**
+   - Countdown timer for each test question.
+   - Logs timer ticks every 10 seconds (configurable to log every second if needed).
+   - Automatically submits the test when time expires.
 
-### `npm test`
+3. **Unified Event Logging**
+   - All events are timestamped and logged in a structured format (`ProctorLog`).
+   - Event types include:
+     - `TEST_START`, `TEST_RESUME`, `TAB_SWITCH`, `FOCUS_RESTORED`, `FULLSCREEN_EXIT`
+     - `COPY_ATTEMPT`, `PASTE_ATTEMPT`, `CUT_ATTEMPT`, `TIMER_TICK`
+     - `SUBMIT`, `AUTO_SUBMIT`
+   - Metadata includes user agent, visibility state, and any additional relevant info.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. **Local Storage Logging**
+   - Logs are currently stored in `localStorage` for offline persistence.
+   - Logs can be retrieved, cleared, or downloaded manually.
+   - Each test attempt is assigned a unique `attemptId`.
 
-### `npm run build`
+5. **Optional Backend / API Integration**
+   - Logs can be easily sent to a backend, database, or an online mock API (e.g., webhook.site) by adding a simple POST request in `ProctorLogger`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Start the app locally**
 
-### `npm run eject`
+```bash
+npm install
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. **Run the test**
+   - Click **Start Test**. Fullscreen is required.
+   - Complete the question in the textarea.
+   - Violations and remaining time are displayed live.
+   - Exiting fullscreen or switching tabs pauses the test and logs the event.
+   - Submit manually or allow timer to auto-submit.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **View logs**
+   - Stored in `localStorage` under key `proctor_logs`.
+   - Example log format:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```json
+[
+  {
+    "attemptId": "f7e2a7f0-1234-5678-9abc-1a2b3c4d5e6f",
+    "questionId": "Q1",
+    "type": "TAB_SWITCH",
+    "metadata": {
+      "userAgent": "Mozilla/5.0...",
+      "visibilityState": "hidden"
+    },
+    "timestamp": 1700000000000
+  }
+]
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
+## Deployment
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This project is deployed using **GitHub Pages**.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Install `gh-pages` (already included in dev dependencies):
+
+```bash
+npm install gh-pages --save-dev
+```
+
+2. Deploy:
+
+```bash
+npm run deploy
+```
+
+3. The live site will be available at the URL specified in `package.json` "homepage":  
+[https://myth293.github.io/secure-assessment](https://myth293.github.io/secure-assessment)
+
+---
